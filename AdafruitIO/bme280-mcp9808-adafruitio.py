@@ -18,7 +18,7 @@ ADAFRUIT_IO_USERNAME = 'input username here using nano on host raspi'
 # Create instance of the REST client
 aio = Client(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
 
-# Set up Adafruit IO Feeds, name these according to what you will be naming your feeds for this specific project
+# Set up Adafruit IO Feeds, name these according to what you will be naming your feeds for this specific project in adafruitIO
 mcpTemp_feed = aio.feeds('breadboard-mcptemp')
 temperature_feed = aio.feeds('breadboard-temp')
 humidity_feed = aio.feeds('breadboard-humidity')
