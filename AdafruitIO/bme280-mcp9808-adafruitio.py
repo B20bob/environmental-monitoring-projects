@@ -1,4 +1,5 @@
 # Output to log file has been disabled while testing with adafruit io
+# This script uses BOTH bme280 AND mcp9808. If only using bme280 please use the script already set up for that.
 
 import time
 import board
@@ -11,13 +12,14 @@ from Adafruit_IO import Client, Feed
 sample_rate = 5
 
 # AdafruitIO user data
-ADAFRUIT_IO_KEY = 'input api key here from nano on the raspi'
-ADAFRUIT_IO_USERNAME = 'input username here from nano on the raspi'
+ADAFRUIT_IO_KEY = 'input api key here using nano on host raspi'
+ADAFRUIT_IO_USERNAME = 'input username here using nano on host raspi'
 
 # Create instance of the REST client
 aio = Client(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
 
 # Set up Adafruit IO Feeds, name these according to what you will be naming your feeds for this specific project
+mcpTemp_feed = aio.feeds('breadboard-mcptemp')
 temperature_feed = aio.feeds('breadboard-temp')
 humidity_feed = aio.feeds('breadboard-humidity')
 pressure_feed = aio.feeds('breadboard-pressure')
@@ -44,11 +46,11 @@ while True:
     #altitude = bme280.altitude * 3.28084
 
    # Create variables for temp (mcp9808)
-    ## mcpTemp = mcp.temperature * 9/5 + 32
+    mcpTemp = mcp.temperature * 9/5 + 32
 
     # Print values to terminal
-    #print("\nmcpTemp: %0.2f F" % mcpTemp)
-    print("\nbmeTemp: %0.2f F" % temp)
+    print("\nmcpTemp: %0.2f F" % mcpTemp)
+    print("bmeTemp: %0.2f F" % temp)
     print("Humidity: %0.2f %%" % humidity)
     print("Pressure: %0.2f hPa" % pressure)
     #print("Altitude = %0.2f feet" % altitude)
@@ -57,14 +59,17 @@ while True:
     if humidity is not None and temp is not None:
 
         # Send humidity and temperature feeds to Adafruit IO
-        temperature = '%.2f'%(temp)
-        humidity = '%.2f'%(humidity)
-        pressure = '%.2f'%(pressure)
+        mcpTemp = '%.2f F'%(mcpTemp)
+        temperature = '%.2f F'%(temp)
+        humidity = '%.2f %'%(humidity)
+        pressure = '%.2f hPa'%(pressure)
+        aio.send(mcpTemp_feed.key, str(mcpTemp))
         aio.send(temperature_feed.key, str(temp))
         aio.send(humidity_feed.key, str(humidity))
         aio.send(pressure_feed.key, str(pressure))
+
     else:
-        print('Failed to get DHT22 Reading, trying again in ', DHT_READ_TIMEOUT, 'seconds')
+        print('Failed to get Reading, trying again in ', sample_rate, 'seconds')
     # Timeout to avoid flooding Adafruit IO
 
     time.sleep(sample_rate)
