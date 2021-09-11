@@ -1,0 +1,1 @@
+A repo housing various environmental monitoring projects compatible with the raspberry pi
