@@ -54,7 +54,7 @@ while True:
     #print("Altitude = %0.2f feet" % altitude)
 
 
-    if humidity is not None and temperature is not None:
+    if humidity is not None and temp is not None:
 
         # Send humidity and temperature feeds to Adafruit IO
         temperature = '%.2f'%(temp)
