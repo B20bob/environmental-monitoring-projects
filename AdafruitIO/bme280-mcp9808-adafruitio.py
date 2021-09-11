@@ -61,7 +61,7 @@ while True:
         # Send humidity and temperature feeds to Adafruit IO
         mcpTemp = '%.2f F'%(mcpTemp)
         temperature = '%.2f F'%(temp)
-        humidity = '%.2f %'%(humidity)
+        humidity = '%.2f pcnt'%(humidity)
         pressure = '%.2f hPa'%(pressure)
         aio.send(mcpTemp_feed.key, str(mcpTemp))
         aio.send(temperature_feed.key, str(temp))
