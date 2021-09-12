@@ -19,5 +19,8 @@ https://learn.adafruit.com/circuitpython-on-raspberrypi-linux
 # BME280 library:
 https://learn.adafruit.com/adafruit-bme280-humidity-barometric-pressure-temperature-sensor-breakout?view=all#python-circuitpython-test
 
+# BMP280 library:
+https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test
+
 # MCP9808 library:
 https://learn.adafruit.com/adafruit-mcp9808-precision-i2c-temperature-sensor-guide/python-circuitpython
