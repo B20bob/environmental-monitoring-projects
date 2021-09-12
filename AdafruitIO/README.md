@@ -4,6 +4,9 @@ Scripts in this folder are written in python3 and are intended to be run with ra
 - git
 - python3
 
+# Set up raspi to autorun python script on boot:
+https://bc-robotics.com/tutorials/running-python-program-boot-raspberry-pi/
+
 # AdafruitIO Basics:
 https://learn.adafruit.com/series/adafruit-io-basics
 
