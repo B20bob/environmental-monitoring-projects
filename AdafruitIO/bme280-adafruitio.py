@@ -1,5 +1,6 @@
 # Output to log file has been disabled while testing with adafruit io
 # This script uses a BME280 sensor. If you want a script that uses bot the bme280 and mcp9808 please see that script.
+# make sure data being sent to AdafruitIO is integers only (eg: no F, C or % appendages), these cause issues with the feeds and cause data to not display properly.
 
 import time
 import board
@@ -23,8 +24,9 @@ temperature_feed = aio.feeds('breadboard-temp')
 humidity_feed = aio.feeds('breadboard-humidity')
 pressure_feed = aio.feeds('breadboard-pressure')
 
-# Create sensor object, using the board's default I2C bus.
+# Create sensor object, using the board's default I2C bus
 i2c = board.I2C()  # uses board.SCL and board.SDA
+# Set i2c address
 bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c, address=0x76)
 
 
@@ -34,6 +36,7 @@ bme280.sea_level_pressure = 1010.00
 
 
 while True:
+
     # Create variables for temp, humidity, and pressure (bme280)
     temp = bme280.temperature * 9/5 + 32
     humidity = bme280.relative_humidity
@@ -41,25 +44,26 @@ while True:
     #altitude = bme280.altitude * 3.28084
 
 
-    # Print values to terminal
-    print("\nbmeTemp: %0.2f F" % temp)
-    print("Humidity: %0.2f %%" % humidity)
-    print("Pressure: %0.2f hPa" % pressure)
+    ## Print values to terminal
+    #print("\nbmeTemp: %0.2f F" % temp)
+    #print("Humidity: %0.2f %%" % humidity)
+    #print("Pressure: %0.2f hPa" % pressure)
     #print("Altitude = %0.2f feet" % altitude)
 
 
     if humidity is not None and temp is not None:
 
         # Send humidity and temperature feeds to Adafruit IO
-        temp = '%.2f F'%(temp)
-        humidity = '%.2f %%'%(humidity)
-        pressure = '%.2f hPa'%(pressure)
+        temp = '%.2f'%(temp)
+        humidity = '%.2f'%(humidity)
+        pressure = '%.2f'%(pressure) #Pressure is displayed in hPa
         aio.send(temperature_feed.key, str(temp))
         aio.send(humidity_feed.key, str(humidity))
         aio.send(pressure_feed.key, str(pressure))
 
     else:
+        
         print('Failed to get Reading, trying again in ', sample_rate, 'seconds')
+    
     # Timeout to avoid flooding Adafruit IO
-
     time.sleep(sample_rate)

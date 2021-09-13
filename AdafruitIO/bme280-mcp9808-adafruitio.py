@@ -1,5 +1,6 @@
 # Output to log file has been disabled while testing with adafruit io
 # This script uses BOTH bme280 AND mcp9808. If only using bme280 please use the script already set up for that.
+# make sure data being sent to AdafruitIO is integers only (eg: no F, C or % appendages), these cause issues with the feeds and cause data to not display properly.
 
 import time
 import board
@@ -39,6 +40,7 @@ bme280.sea_level_pressure = 1010.00
 
 
 while True:
+
     # Create variables for temp, humidity, and pressure (bme280)
     temp = bme280.temperature * 9/5 + 32
     humidity = bme280.relative_humidity
@@ -49,27 +51,28 @@ while True:
     mcpTemp = mcp.temperature * 9/5 + 32
 
     # Print values to terminal
-    print("\nmcpTemp: %0.2f F" % mcpTemp)
-    print("bmeTemp: %0.2f F" % temp)
-    print("Humidity: %0.2f %%" % humidity)
-    print("Pressure: %0.2f hPa" % pressure)
+    #print("\nmcpTemp: %0.2f F" % mcpTemp)
+    #print("bmeTemp: %0.2f F" % temp)
+    #print("Humidity: %0.2f %%" % humidity)
+    #print("Pressure: %0.2f hPa" % pressure)
     #print("Altitude = %0.2f feet" % altitude)
 
 
     if humidity is not None and temp is not None:
 
         # Send humidity and temperature feeds to Adafruit IO
-        mcpTemp = '%.2f F'%(mcpTemp)
-        temp = '%.2f F'%(temp)
-        humidity = '%.2f %%'%(humidity)
-        pressure = '%.2f hPa'%(pressure)
+        mcpTemp = '%.2f'%(mcpTemp)
+        temp = '%.2f'%(temp)
+        humidity = '%.2f'%(humidity)
+        pressure = '%.2f'%(pressure)
         aio.send(mcpTemp_feed.key, str(mcpTemp))
         aio.send(temperature_feed.key, str(temp))
         aio.send(humidity_feed.key, str(humidity))
         aio.send(pressure_feed.key, str(pressure))
 
     else:
-        print('Failed to get Reading, trying again in ', sample_rate, 'seconds')
-    # Timeout to avoid flooding Adafruit IO
 
+        print('Failed to get Reading, trying again in ', sample_rate, 'seconds')
+    
+    # Timeout to avoid flooding Adafruit IO
     time.sleep(sample_rate)
